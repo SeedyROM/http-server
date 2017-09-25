@@ -29,7 +29,7 @@ int tcp_socket_create (
 }
 
 void tcp_socket_interrupt(const int signal) {
-    puts("Server shutting down due to intterupt...");
+    puts("\nServer shutting down due to intterupt...");
     exit(0);
 }
 

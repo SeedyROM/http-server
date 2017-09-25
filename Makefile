@@ -34,7 +34,8 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 .PHONY: clean run
 
 clean:
-	$(RM) -r $(BUILD_DIR)
+	$(RM) -r $(BUILD_DIR)/*
+	touch $(BUILD_DIR)/.gitkeep
 
 run:
 	./$(BUILD_DIR)/$(TARGET_EXEC)

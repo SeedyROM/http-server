@@ -30,4 +30,4 @@ void tcp_socket_destroy(tcp_socket* sock);
 
 #define tcp_socket_write(sock, connection_file_desc, format, ...)  \
     snprintf(sock->buffer, sock->buffer_size, (format), ##__VA_ARGS__); \
-    write(connection_file_desc, sock->buffer, strlen(sock->buffer)); \
+    write(connection_file_desc, sock->buffer, strlen(sock->buffer));
