@@ -16,7 +16,8 @@ void http_response_set_code(http_response* response, const short code) {
     const char* http_version = "HTTP/1.1 ";
 
     strcpy(last_header_entry++, http_version);
-    sprintf(last_header_entry + sizeof(http_version), "%d ", code);   
+    sprintf(last_header_entry + sizeof(http_version), "%d ", code); 
+      
     if(code > 300)
         strcat(last_header_entry, "ERROR");
     else

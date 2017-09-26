@@ -8,7 +8,7 @@ void handler(tcp_socket* sock, int conn) {
     http_response r;
     http_response_create(&r, 200);
     http_response_append_header(&r, "Content-Type", "text/html");
-    http_response_set_body(&r, "<h1>I eat <i>ass</i></h1>");
+    http_response_set_body(&r, "<h1>I eat <i><u>S</u>O<u>U</u>L<b>S</b></i></h1>");
 
     tcp_socket_write(sock, conn, http_response_text(&r));
     close(conn);
