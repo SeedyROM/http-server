@@ -45,10 +45,35 @@ int tcp_socket_listen(
 
     while(1)
     {
+        // Accept a connection to a client.
         int connection_file_desc;
         connection_file_desc = accept(sock->file_descriptor, NULL, NULL);
 
-        handler(sock, connection_file_desc);
+        // Fork a process off to handle the request.
+        pid_t pid;
+        if((pid = fork()) < 0) // If the fork fails...
+            perror("Failed to fork new process.");
+        else if(pid == 0) { // If it's a child process close and handle.
+            close(sock->file_descriptor);
+            handler(sock, connection_file_desc);
+
+            exit(0);
+        }
+
+        // Parent closes connection fd and
+        // increment number of outstanding processes. 
+        close(connection_file_desc);
+        sock->child_process_count++;
+
+        // Clean up.
+        while(sock->child_process_count) {
+            pid = waitpid((pid_t) -1, NULL, WNOHANG);
+            if (pid == 0)
+                break;
+            else
+                sock->child_process_count--;
+        }
+
     }
 
     return 0;

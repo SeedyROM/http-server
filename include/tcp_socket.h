@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <signal.h>
+#include <sys/wait.h>
 
 typedef struct _tcp_socket {
     int file_descriptor;
@@ -12,6 +13,7 @@ typedef struct _tcp_socket {
     struct sockaddr_in socket; 
     char* buffer;
     int buffer_size;
+    int child_process_count;
 } tcp_socket;
 
 int tcp_socket_create(
@@ -25,8 +27,6 @@ int tcp_socket_listen(
 );
 void tcp_socket_handle_interrupt(int signal, int connection_file_desc);
 void tcp_socket_destroy(tcp_socket* sock);
-
-#define TM_PRINTF(f_, ...) printf((f_), ##__VA_ARGS__)
 
 #define tcp_socket_write(sock, connection_file_desc, format, ...)  \
     snprintf(sock->buffer, sock->buffer_size, (format), ##__VA_ARGS__); \
