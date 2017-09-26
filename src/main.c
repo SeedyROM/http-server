@@ -2,21 +2,15 @@
 #include <stdlib.h>
 
 #include "tcp_socket.h"
+#include "http.h"
 
 void handler(tcp_socket* sock, int conn) {
-    // Return a fake 404, lol.
-    tcp_socket_write(sock, conn, "HTTP/1.1 200 OK\n\
-Last-Modified: Mon, 23 Jul 2007 08:41:56 GMT\n\
-Content-Length: 27\n\
-Content-Type: text/html\n\
-\r\n\
-<h1>Existance is pain.</h1>");
+    http_response r;
+    http_response_create(&r, 200);
+    http_response_append_header(&r, "Content-Type", "text/html");
+    http_response_set_body(&r, "<h1>I eat <i>ass</i></h1>");
 
-    // while(recv(conn, sock->buffer, sizeof(sock->buffer) - 1, 0) > 0) {
-    //     puts("receiving data...");
-    //     printf("%s\n", sock->buffer);
-    // }
-   
+    tcp_socket_write(sock, conn, http_response_text(&r));
     close(conn);
 }
 
