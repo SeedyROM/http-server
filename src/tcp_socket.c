@@ -72,12 +72,13 @@ int tcp_socket_listen(
         }
 
         // Parent closes connection fd and
-        // increment number of outstanding processes. 
+        // increments number of outstanding processes. 
         close(connection_file_desc);
         sock->child_process_count++;
 
         // Clean up child processes.
         while(sock->child_process_count) {
+            // Kill the process by sending a signal.
             pid = waitpid((pid_t) -1, NULL, WNOHANG);
             if (pid == 0)
                 break;
